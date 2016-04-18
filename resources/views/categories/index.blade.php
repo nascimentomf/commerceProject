@@ -10,12 +10,15 @@
   <th>Description</th>
   <th colspan="2">Action</th>
  </tr>
- <tr>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td>Edit</td>
-  <td>Delete</td>
- </tr>
+ @foreach($categories as $category)
+     <tr>
+      <td>{{$category->id}}</td>
+      <td>{{$category->name}}</td>
+      <td>{{$category->description}}</td>
+      <td>Edit</td>
+      <td>Delete</td>
+     </tr>
+ @endforeach
 </table>
+{!! $categories->render() !!}
 @endSection

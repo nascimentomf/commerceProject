@@ -19,14 +19,10 @@ Route::get('/', [ 'as' => 'home', function () {
 Route::group(['prefix'=> 'admin'], function (){
     // Categories
     Route::group(['prefix'=> 'categories'], function () {
-        Route::get('', [ 'as' => 'categories', function () {
-            return view('categories.index');
-        }]);
+        Route::get('', [ 'as' => 'categories', 'uses' => 'AdminCategoriesController@index']);
     });
     //Products
     Route::group(['prefix'=> 'products'], function () {
-        Route::get('', [ 'as' => 'products', function () {
-            return view('products.index');
-        }]);
+        Route::get('', [ 'as' => 'products', 'uses' => 'AdminProductsController@index']);
     });
 });

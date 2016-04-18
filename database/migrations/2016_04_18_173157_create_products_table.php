@@ -17,6 +17,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->decimal('price',4,2);
+            $table->boolean('featured');
+            $table->boolean('recommend');
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();

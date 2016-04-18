@@ -12,4 +12,8 @@ class Product extends Model
         'price',
         'category_id',
     ];
+    // Relacionamento Product to Category
+    public function category(){
+        return $this->belongsTo('CodeCommerce\Category');
+    }
 }
