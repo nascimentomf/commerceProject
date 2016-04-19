@@ -27,70 +27,45 @@ class AdminCategoriesController extends Controller
         
         return view('categories.index', compact('categories'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //Novo cadastro - Formulario
     public function create()
     {
-        //
+        return view('categories.form');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    //Novo cadastro - Gravar
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+
+        $category = $this->categoryModel->create($input);
+
+        return redirect()->route('categories');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    //Editando cadastro - Formulario, requer select com as categorias cadastradas
     public function edit($id)
     {
-        //
+        $category = $this->categoryModel->find($id);
+        return view('categories.form', compact('category'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    //Editando cadastro - Gravar, realiza o update do registro em edicao
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+
+        $category = $this->categoryModel->find($id);
+
+        $category->fill($input);
+        $category->save();
+
+        return redirect()->route('categories');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    //Apagar registro da base de dados
     public function destroy($id)
     {
-        //
+        $category = $this->categoryModel->find($id)->delete();
+
+        return redirect()->route('categories');
     }
 }

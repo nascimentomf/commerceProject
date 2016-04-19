@@ -2,6 +2,7 @@
 
 namespace CodeCommerce\Http\Controllers;
 
+use CodeCommerce\Category;
 use CodeCommerce\Product;
 use Illuminate\Http\Request;
 
@@ -12,85 +13,61 @@ class AdminProductsController extends Controller
 {
     // Model Products Instance
     protected $productModel;
-    
     public function __construct(Product $productModel){
         $this->productModel = $productModel;
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+    //listagem dos registros cadastrados, com paginacao.
     public function index()
     {
         $products = $this->productModel->paginate(10);
         return view('products.index', compact('products'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    
+    //Novo cadastro - Formulario, requer select com as categorias cadastradas
+    public function create(Category $category)
     {
-        //
+        $categories = $category->lists('name', 'id');
+        return view('products.form', compact('categories'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    //Novo cadastro - Gravar, teste os parametros de featured e recommend
+    public function store(Requests\AdminProductRequest $request)
     {
-        //
-    }
+        $input = $request->all();
+        $input['featured'] = $request->get('featured') ? true: false;
+        $input['recommend'] = $request->get('recommend') ? true: false;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+        $product = $this->productModel->create($input);
+
+        return redirect()->route('products');
+    }
+    
+    //Editando cadastro - Formulario, requer select com as categorias cadastradas
+    public function edit(Category $category, $id)
     {
-        //
+        $product = $this->productModel->find($id);
+        $categories = $category->lists('name', 'id');
+        return view('products.form', compact('product', 'categories'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    //Editando cadastro - Gravar, realiza o update do registro em edicao
+    public function update(Requests\AdminProductRequest $request, $id)
     {
-        //
-    }
+        $input = $request->all();
+        $input['featured'] = $request->get('featured') ? true: false;
+        $input['recommend'] = $request->get('recommend') ? true: false;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $product = $this->productModel->find($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        $product->fill($input);
+        $product->save();
+
+        return redirect()->route('products');
+    }
+    //Apagar registro da base de dados
     public function destroy($id)
     {
-        //
+        $product = $this->productModel->find($id)->delete();
+        
+        return redirect()->route('products');
     }
 }

@@ -2,7 +2,8 @@
 @Section('title', 'Products')
 
 @Section('content')
-  <h3>Products Section <a href="#new" class="btn btn-default">New Product</a></h3>
+  <h3>Products Section <a href="{{route('products.create')}}" class="btn btn-default">New Product</a></h3>
+
   <table class="table">
     <tr>
       <th>ID</th>
@@ -20,8 +21,8 @@
       <td>{{$product->price}}</td>
       <td>{{$product->category->name}}</td>
       <td>Image</td>
-      <td>Edit</td>
-      <td>Delete</td>
+      <td><a href="{{route('products.edit', ['id'=>$product->id])}}">Edit</a></td>
+      <td><a href="{{route('products.destroy', ['id'=>$product->id])}}">Delete</a></td>
     </tr>
     @endforeach
   </table>

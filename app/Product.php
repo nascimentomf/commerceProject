@@ -11,6 +11,8 @@ class Product extends Model
         'description',
         'price',
         'category_id',
+        'featured',
+        'recommend',
     ];
     // Relacionamento Product to Category
     public function category(){
