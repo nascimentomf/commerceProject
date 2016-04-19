@@ -19,7 +19,7 @@
 {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 </div>
 
-<a href="{{route('categories')}}" class="btn btn-default">Voltar</a>
+<a href="{{route('categories')}}" class="btn btn-default">Back</a>
 {!! Form::submit('Save') !!}
 
 

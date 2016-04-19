@@ -20,7 +20,7 @@
       <td>{{$product->description}}</td>
       <td>{{$product->price}}</td>
       <td>{{$product->category->name}}</td>
-      <td>Image</td>
+      <td><a href="{{route('products.images', ['id'=>$product->id])}}">Image</a></td>
       <td><a href="{{route('products.edit', ['id'=>$product->id])}}">Edit</a></td>
       <td><a href="{{route('products.destroy', ['id'=>$product->id])}}">Delete</a></td>
     </tr>

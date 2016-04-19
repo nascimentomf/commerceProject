@@ -31,7 +31,7 @@
 {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 </div>
 
-<a href="{{route('products')}}" class="btn btn-default">Voltar</a>
+<a href="{{route('products')}}" class="btn btn-default">Back</a>
 {!! Form::submit('Save') !!}
 
 

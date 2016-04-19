@@ -4,6 +4,8 @@ namespace CodeCommerce\Http\Controllers;
 
 use CodeCommerce\Category;
 use CodeCommerce\Product;
+use CodeCommerce\ProductImage;
+use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Http\Request;
 
 use CodeCommerce\Http\Requests;
@@ -69,5 +71,55 @@ class AdminProductsController extends Controller
         $product = $this->productModel->find($id)->delete();
         
         return redirect()->route('products');
+    }
+    
+    /**
+     * Images actions
+     */
+    
+    //listar imagens do produto
+    public function images(ProductImage $images, $id){
+        $product = $this->productModel->find($id);
+        $images = $product->images()->paginate(10);
+        
+        return view('products.image', compact('images', 'product'));
+    }
+    
+    //Novo upload de imagem
+    public function images_create($id){
+        $product = $this->productModel->find($id);
+        return view('products.image_form', compact('product'));
+    }
+
+    //Novo upload de imagem
+    public function images_store(Requests\ProductImageRequest $request, \CodeCommerce\ProductImage $productImage, \Illuminate\Contracts\Filesystem\Factory $fs, $id){
+        //upload da imagem e gravar registro do DB
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+
+        //insercao db
+        $productImage = $productImage->create(['product_id'=>$id, 'extension'=>$extension]);
+        //upload
+        $fs->disk('public_local')->put($productImage->id.'.'.$productImage->extension,file_get_contents($file));
+
+        return redirect()->route('products.images', ['id'=>$id]);
+
+    }
+
+    //Apagar imagem
+    public function images_destroy(\CodeCommerce\ProductImage $productImage, \Illuminate\Contracts\Filesystem\Factory $fs, $id){
+        //deletar registro do DB
+        //deletar imagem do filesystem
+        $image = $productImage->find($id);
+        $product_id = $image->product_id;
+
+        // apaga arquivo,se existir no disco
+        if(file_exists(public_path().'/uploads/'.$image->id.'.'.$image->extension)){
+            $fs->disk('public_local')->delete($image->id.'.'.$image->extension);
+        }
+
+        $image->delete();
+
+        return redirect()->route('products.images', ['id'=>$product_id]);
     }
 }
