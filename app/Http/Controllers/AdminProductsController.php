@@ -5,6 +5,7 @@ namespace CodeCommerce\Http\Controllers;
 use CodeCommerce\Category;
 use CodeCommerce\Product;
 use CodeCommerce\ProductImage;
+use CodeCommerce\Tag;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Http\Request;
 
@@ -38,9 +39,19 @@ class AdminProductsController extends Controller
         $input = $request->all();
         $input['featured'] = $request->get('featured') ? true: false;
         $input['recommend'] = $request->get('recommend') ? true: false;
-
+        //string tags = tag1, tag2, tag3
+        //1- separar tags
+        //2 - remover espacos (trim)
+        //3- salvar tags e 
+        //4 - sync para atribuir to Product
+        //Funcao
+        //recebe os ids das tags do produto
+        $tags = $this->tagsToCollection($input['tag']);
+        //cadastra o produto
         $product = $this->productModel->create($input);
-
+        //relaciona Product to Tag
+        $product->tags()->sync($tags);
+        
         return redirect()->route('products');
     }
     
@@ -48,6 +59,7 @@ class AdminProductsController extends Controller
     public function edit(Category $category, $id)
     {
         $product = $this->productModel->find($id);
+        $product->tag = $product->tag_list;
         $categories = $category->lists('name', 'id');
         return view('products.form', compact('product', 'categories'));
     }
@@ -59,7 +71,10 @@ class AdminProductsController extends Controller
         $input['recommend'] = $request->get('recommend') ? true: false;
 
         $product = $this->productModel->find($id);
-
+        // update de tags
+        $tags = $this->tagsToCollection($input['tag']);
+        $product->tags()->sync($tags);
+        
         $product->fill($input);
         $product->save();
 
@@ -122,4 +137,19 @@ class AdminProductsController extends Controller
 
         return redirect()->route('products.images', ['id'=>$product_id]);
     }
+
+    //Funcao cadastro de tags
+    public function tagsToCollection($tag){
+        $tags = explode(',',$tag);
+        $tags = array_map('trim', $tags);
+
+        $tagArray = [];
+        //percorrer tags
+        foreach ($tags as $tag_name){
+            $tagArray[] = Tag::firstOrCreate(['name'=> $tag_name])->id;
+        }
+
+        return $tagArray;
+    }
+
 }

@@ -18,7 +18,7 @@ Route::get('/', [ 'as' => 'home', function () {
 //Grupo de rotas admin
 Route::group(['prefix'=> 'admin'], function (){
     // Categories
-    Route::group(['prefix'=> 'categories'], function () {
+    Route::group(['prefix'=> 'categories', 'where' => ['id' => '[0-9]+']], function () {
         Route::get('', [ 'as' => 'categories', 'uses' => 'AdminCategoriesController@index']);
         Route::get('{id}/destroy', [ 'as' => 'categories.destroy', 'uses' => 'AdminCategoriesController@destroy']);
         Route::get('create', [ 'as' => 'categories.create', 'uses' => 'AdminCategoriesController@create']);
@@ -27,7 +27,7 @@ Route::group(['prefix'=> 'admin'], function (){
         Route::get('{id}/edit', [ 'as' => 'categories.edit', 'uses' => 'AdminCategoriesController@edit']);
     });
     //Products
-    Route::group(['prefix'=> 'products'], function () {
+    Route::group(['prefix'=> 'products', 'where' => ['id' => '[0-9]+']], function () {
         Route::get('', [ 'as' => 'products', 'uses' => 'AdminProductsController@index']);
         Route::get('{id}/destroy', [ 'as' => 'products.destroy', 'uses' => 'AdminProductsController@destroy']);
         Route::get('create', [ 'as' => 'products.create', 'uses' => 'AdminProductsController@create']);

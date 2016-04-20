@@ -29,6 +29,9 @@
 <br />
 {!! Form::label('description', 'Description: ') !!}
 {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+<br />
+{!! Form::label('tag', 'Tags (example.: tag1, tag2, ...): ') !!}
+{!! Form::textarea('tag', null, ['class' => 'form-control']) !!}
 </div>
 
 <a href="{{route('products')}}" class="btn btn-default">Back</a>
