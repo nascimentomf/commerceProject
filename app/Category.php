@@ -12,6 +12,6 @@ class Category extends Model
     ];
     // Relacionamento Category to Product
     public function products(){
-        return $this->hasMany('CodeCommerce\Products');
+        return $this->hasMany('CodeCommerce\Product');
     }
 }

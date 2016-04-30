@@ -35,4 +35,16 @@ class Product extends Model
 
         return implode(', ', $tags);
     }
+    
+    //Pesquisa de escopo
+    
+    public function scopeFeatured($query)
+    {
+        return $query->where('featured', '=', 1);
+    }
+
+    public function scopeRecommend($query)
+    {
+        return $query->where('recommend', '=', 1);
+    }
 }

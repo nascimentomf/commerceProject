@@ -12,8 +12,34 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.styles([
+        'animate.css',
+        'bootstrap.min.css',
+        'font-awesome.min.css',
+        'main.css',
+        'prettyPhoto.css',
+        'price-range.css',
+        'responsive.css',
+    ]);
 });
+
 elixir(function(mix) {
-    mix.version('css/app.css');
+    mix.scripts([
+        'bootstrap.min.js',
+        'contact.js',
+        'gmaps.js',
+        'html5shiv.js',
+        'jquery.prettyPhoto.js',
+        'jquery.scrollUp.min.js',
+        'main.js',
+        'price-range.js',
+    ]);
+});
+
+elixir(function(mix) {
+    mix.version(['css/all.css', 'js/all.js']);
+});
+
+elixir(function(mix) {
+    mix.copy('resources/assets/fonts', 'public/build/fonts');
 });

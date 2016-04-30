@@ -5,7 +5,7 @@
             Nasctec Commerce - @yield('title')
         </title>
 
-        <link href="{{elixir('css/app.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{elixir('css/all.css')}}" rel="stylesheet" type="text/css">
 
     </head>
     <body>

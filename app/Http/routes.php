@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', [ 'as' => 'home', function () {
-    return view('home');
-}]);
+Route::get('/', [ 'as' => 'home', 'uses' => 'StoreController@index']);
+Route::get('product/{id}', [ 'as' => 'product.detail', 'uses' => 'StoreController@show_product']);
+Route::get('category/{id}', [ 'as' => 'category.detail', 'uses' => 'StoreController@describe_category']);
 
 //Grupo de rotas admin
 Route::group(['prefix'=> 'admin'], function (){
