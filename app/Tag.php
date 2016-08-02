@@ -11,6 +11,7 @@ class Tag extends Model
     ];
 
     //Relacionamento Image to Product
+    //@author  Moises <moises.fn@gmail.com>
     public function products(){
         return $this->belongsToMany('CodeCommerce\Product');
     }
